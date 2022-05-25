@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sam's Wordle</title>
+    <style>
+        body {
+            background-color: #111;
+            color: #eee;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        header h1 {
+            font-size: 1.4rem;
+            text-align: center;
+            padding: 0 .4rem .4rem;
+            border-bottom: 1px solid #555;
+        }
+
+        #container {
+            width: 500px;
+            margin: 0 auto;
+        }
+
+        #letter-board {
+            padding: 3rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .letters {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 4px;
+            grid-auto-rows: 74px;
+            grid-auto-columns: 74px;
+            grid-template-areas: "a a a a a";
+            margin-bottom: 4px;
+        }
+        
+        .letter {
+            text-align: center;
+            line-height: 74px;
+            border: 1px solid #555;
+        }
+
+        .green {
+            background-color: rgb(66, 150, 66);
+            border: 1px solid rgb(66, 150, 66);
+        }
+
+        .orange  {
+            background-color: rgb(188, 191, 40);
+            border: 1px solid rgb(188, 191, 40);
+        }
+
+        .grey {
+            background-color: rgb(73, 71, 71);
+            border: 1px solid rgb(73, 71, 71);
+        }
+
+        .keyrow {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 4px;
+            grid-auto-rows: 60px;
+            grid-template-areas: "a a a a a a a a a a";
+            margin-bottom: 4px;
+        }
+
+        .keyrow2 {
+            display: grid;
+            grid-template-columns: repeat(9, 1fr);
+            gap: 4px;
+            grid-auto-rows: 60px;
+            grid-template-areas: "a a a a a a a a a ";
+            margin-bottom: 4px;
+            padding: 0 25px;
+        }
+
+        .keyrow3 {
+            display: grid;
+            grid-template-columns: 2fr repeat(7, 1fr) 2fr;
+            gap: 4px;
+            grid-auto-rows: 60px;
+            grid-template-areas: "a a a a a a a a a";
+            margin-bottom: 4px;
+        }
+
+        .key {
+            text-align: center;
+            line-height: 60px;
+            cursor: pointer;
+            border-radius: 6px;
+            background-color: rgb(121, 121, 121);
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Sam's Wordle</h1>
+    </header>
+    <div id="container">
+        <div id="letter-board">
+            <div id="row1" class="letters">
+                <div class="letter grey">W</div>
+                <div class="letter green">O</div>
+                <div class="letter">R</div>
+                <div class="letter orange">D</div>
+                <div class="letter">S</div>
+            </div>
+            <div id="row2" class="letters">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div id="row3" class="letters">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div id="row4" class="letters">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div id="row5" class="letters">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+            <div id="row6" class="letters">
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+                <div class="letter"></div>
+            </div>
+        </div>
+        <div id="keyboard">
+            <div id="keyrow1" class="keyrow">
+                <div class="key">Q</div>
+                <div class="key">W</div>
+                <div class="key">E</div>
+                <div class="key">R</div>
+                <div class="key">T</div>
+                <div class="key">Y</div>
+                <div class="key">U</div>
+                <div class="key">I</div>
+                <div class="key">O</div>
+                <div class="key">P</div>
+            </div>
+            <div id="keyrow2" class="keyrow2">
+                <div class="key">A</div>
+                <div class="key">S</div>
+                <div class="key">D</div>
+                <div class="key">F</div>
+                <div class="key">G</div>
+                <div class="key">H</div>
+                <div class="key">J</div>
+                <div class="key">K</div>
+                <div class="key">L</div>
+            </div>
+            <div id="keyrow3" class="keyrow3">
+                <div class="key">ENTER</div>
+                <div class="key">Z</div>
+                <div class="key">X</div>
+                <div class="key">C</div>
+                <div class="key">V</div>
+                <div class="key">B</div>
+                <div class="key">N</div>
+                <div class="key">M</div>
+                <div class="key">DEL</div>
+            </div>
+        </div>
+    </div>
+    <script src="wordList.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
