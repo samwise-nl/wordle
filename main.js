@@ -9,6 +9,13 @@ function getWord() {
     return selectedWord;
 }
 
+function userNotice(message) {
+    const alertEl = document.querySelector('.alert');
+    alertEl.innerText = message;
+    alertEl.style.display = "block";
+    setTimeout(() => { alertEl.style.display = "none"; }, 3000);
+}
+
 function Row(rowId) {
     this.rowId = rowId;
     this.currentIndex = 1;
@@ -100,7 +107,27 @@ document.addEventListener('DOMContentLoaded', function () {
                         if (row.matches(todaysWord)) {
                             row.colorCells(todaysWord);
                             puzzleDone = true;
-                            alert(`Success! Today's word was ${todaysWord}`);
+                            switch (rowIndex) {
+                                case 1:
+                                    userNotice('Genius!')
+                                    break;
+                                case 2:
+                                    userNotice('Magnificent!')
+                                    break;
+                                case 3:
+                                    userNotice('Impressive!')
+                                    break;
+                                case 4:
+                                    userNotice('Splendid!')
+                                    break;
+                                case 5:
+                                    userNotice('Great!')
+                                    break;
+                                default:
+                                    userNotice('Phew!')
+                                    break;
+                            }
+                            console.log(`Success! Today's word was ${todaysWord}`);
                         } 
                         else if (row.isValidWord()) {
                             row.colorCells(todaysWord);
@@ -109,11 +136,11 @@ document.addEventListener('DOMContentLoaded', function () {
                             row.currentIndex = 1;
                             // TODO: fill in used keys
                         } else {
-                            alert(`not a valid word, try again`);
+                            userNotice(`Not a valid word, try again`);
                         }
                     } else {
                         // TODO: shake, give indication
-                        alert("not enough letters!");
+                        userNotice('Not enough letters');
                     }
                     break;
                 default:
@@ -122,6 +149,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     break;
             }
         });
+    });
+
+    document.addEventListener('keydown', (event) => {
+        console.log(event.key)
     });
     // TODO: set up listeners for keyboard keys
 
