@@ -1,20 +1,50 @@
 'use strict';
 
 class Puzzle {
+    validKeys = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'ENTER', 'BACKSPACE']
+
     constructor() {
         this.todaysWord = this.word;
         this.isComplete = false;
         this.rowIndex = 1;
+        this.row = new Row();
+        this.initEventListeners();
     }
 
-   get word() {
+    initEventListeners() {
+        document.querySelectorAll(".key").forEach(elem => {
+            elem.addEventListener('click', (evt) => {
+                const letter = evt.currentTarget.innerText;
+                this.handleKeyEvent(letter);
+            });
+        });
+    
+        document.addEventListener('keydown', (event) => {
+            const letter = event.key.toUpperCase();
+            if (!this.isValidKey(letter)) {
+                this.userNotice('Invalid key pressed!');
+                return;
+            }
+    
+            this.handleKeyEvent(letter);
+        });
+    }
+
+    get word() {
         // possible to get the same word twice since we're not keeping
         // track of what's been used previously
         const wordIndex = Math.floor(Math.random() * wordList.length);
         const selectedWord = wordList[wordIndex];
         console.log(`Word: ${selectedWord} at index[${wordIndex}]`);
         return selectedWord;
-    };
+    }
+
+    get playerStats() {
+        const stats = localStorage.getItem('stats');
+        if (!stats) {
+
+        }
+    }
 
     userNotice(message) {
         // TODO: work on transition - ease-in/out
@@ -22,7 +52,71 @@ class Puzzle {
         alertEl.innerText = message;
         alertEl.style.display = "block";
         setTimeout(() => { alertEl.style.display = "none"; }, 3000);
-    };
+    }
+
+    isValidKey(key) {
+        return this.validKeys.find(val => val == key);
+    }
+
+    handleKeyEvent(letter) {
+        // once complete, ignore keystrokes
+        if (this.isComplete) return;
+
+        switch (letter) {
+            case 'DEL':
+            case 'BACKSPACE':
+                if (this.row.getCurrentCell().innerText === "") {
+                    this.row.getPreviousCell();
+                }
+                this.row.updateCell('');
+                break;
+            case 'ENTER':                
+                if (this.row.isComplete()) {
+                    if (this.row.matches(this.todaysWord)) {
+                        this.row.colorCells(this.todaysWord);
+                        this.isComplete = true;
+                        switch (this.rowIndex) {
+                            case 1:
+                                this.userNotice('Genius!')
+                                break;
+                            case 2:
+                                this.userNotice('Magnificent!')
+                                break;
+                            case 3:
+                                this.userNotice('Impressive!')
+                                break;
+                            case 4:
+                                this.userNotice('Splendid!')
+                                break;
+                            case 5:
+                                this.userNotice('Great!')
+                                break;
+                            default:
+                                this.userNotice('Phew!')
+                                break;
+                        }
+                        console.log(`Success! Today's word was ${this.todaysWord}`);
+                    } 
+                    else if (this.row.isValidWord()) {
+                        this.row.colorCells(this.todaysWord);
+                        this.rowIndex++;
+                        this.row.rowId = `row${this.rowIndex}`;
+                        this.row.currentIndex = 1;
+                        // TODO: fill in used keys
+                    } else {
+                        this.userNotice(`Not a valid word, try again`);
+                    }
+                } else {
+                    // TODO: shake, give indication
+                    this.userNotice('Not enough letters');
+                }
+                break;
+            default:
+                this.row.updateCell(letter);
+                this.row.getNextCell();
+                break;
+        }
+    }
 };
 
 class Row {
@@ -94,75 +188,5 @@ class Row {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const puzzle = new Puzzle();
-    const row = new Row();
-
-    const keys = document.querySelectorAll(".key");
-    keys.forEach(elem => {
-        elem.addEventListener('click', (evt) => {
-            // once complete, ignore keystrokes
-            if (puzzle.isComplete) return;
-            
-            const letter = evt.currentTarget.innerText;
-            switch (letter) {
-                case 'DEL':
-                    if (row.getCurrentCell().innerText === "") {
-                        row.getPreviousCell();
-                    }
-                    row.updateCell('');
-                    break;
-                case 'ENTER':                
-                    if (row.isComplete()) {
-                        if (row.matches(puzzle.todaysWord)) {
-                            row.colorCells(puzzle.todaysWord);
-                            puzzle.isComplete = true;
-                            switch (puzzle.rowIndex) {
-                                case 1:
-                                    puzzle.userNotice('Genius!')
-                                    break;
-                                case 2:
-                                    puzzle.userNotice('Magnificent!')
-                                    break;
-                                case 3:
-                                    puzzle.userNotice('Impressive!')
-                                    break;
-                                case 4:
-                                    puzzle.userNotice('Splendid!')
-                                    break;
-                                case 5:
-                                    puzzle.userNotice('Great!')
-                                    break;
-                                default:
-                                    puzzle.userNotice('Phew!')
-                                    break;
-                            }
-                            console.log(`Success! Today's word was ${puzzle.todaysWord}`);
-                        } 
-                        else if (row.isValidWord()) {
-                            row.colorCells(puzzle.todaysWord);
-                            puzzle.rowIndex++;
-                            row.rowId = `row${puzzle.rowIndex}`;
-                            row.currentIndex = 1;
-                            // TODO: fill in used keys
-                        } else {
-                            puzzle.userNotice(`Not a valid word, try again`);
-                        }
-                    } else {
-                        // TODO: shake, give indication
-                        puzzle.userNotice('Not enough letters');
-                    }
-                    break;
-                default:
-                    row.updateCell(letter);
-                    row.getNextCell();
-                    break;
-            }
-        });
-    });
-
-    document.addEventListener('keydown', (event) => {
-        console.log(event.key)
-    });
-    // TODO: set up listeners for keyboard keys
-
-  }, false);
+    const puzzle = new Puzzle();        
+}, false);
