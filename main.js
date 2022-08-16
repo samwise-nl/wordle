@@ -102,7 +102,6 @@ class Puzzle {
                         this.rowIndex++;
                         this.row.rowId = `row${this.rowIndex}`;
                         this.row.currentIndex = 1;
-                        // TODO: fill in used keys
                     } else {
                         this.userNotice(`Not a valid word, try again`);
                     }
@@ -172,16 +171,19 @@ class Row {
             return wordList.includes(this.getUserWord());
         };
         this.colorCells = (matchWord) => {
+            // TODO: user words with the same letter more than once will be coloured 
+            // incorrectly depending on the order in the matchWord
             const userWord = this.getUserWord().split('');
             const matchWordArr = matchWord;
             userWord.forEach((val, index) => {
+                let color = 'grey';
                 if (matchWordArr.charAt(index) == val) {
-                    document.querySelector(`#${this.rowId} :nth-child(${index + 1})`).classList.add('green');
+                    color = 'green';
                 } else if (matchWordArr.indexOf(val) > 0) {
-                    document.querySelector(`#${this.rowId} :nth-child(${index + 1})`).classList.add('orange');
-                } else {
-                    document.querySelector(`#${this.rowId} :nth-child(${index + 1})`).classList.add('grey');
+                    color = 'orange';
                 }
+                document.querySelector(`#${this.rowId} :nth-child(${index + 1})`).classList.add(color);
+                document.querySelector(`.${val}`).classList.add(color)
             });
         };
     }
