@@ -55,7 +55,7 @@ class Puzzle {
     }
 
     isValidKey(key) {
-        return this.validKeys.find(val => val == key);
+        return this.validKeys.includes(key);
     }
 
     handleKeyEvent(letter) {
@@ -100,6 +100,7 @@ class Puzzle {
                     else if (this.row.isValidWord()) {
                         this.row.colorCells(this.todaysWord);
                         this.rowIndex++;
+                        // TODO - need to handle case where not completed and rowIndex > 6
                         this.row.rowId = `row${this.rowIndex}`;
                         this.row.currentIndex = 1;
                     } else {
@@ -157,12 +158,9 @@ class Row {
             return this.getCurrentCell().innerText != '';
         };
         this.getUserWord = () => {
+            // ChatGPT suggestion
             const allCells = Array.from(document.querySelectorAll(`#${this.rowId} div.letter`));
-            let userWord = '';
-            allCells.forEach(e => {
-                userWord += e.innerText;
-            });
-            return userWord.toLowerCase();
+            return allCells.map(e => e.innerText).join('').toLowerCase();
         };
         this.matches = (matchWord) => {
             return this.getUserWord() == matchWord;
@@ -189,6 +187,4 @@ class Row {
     }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-    const puzzle = new Puzzle();        
-}, false);
+new Puzzle();

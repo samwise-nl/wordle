@@ -116,6 +116,11 @@
             background-color: rgb(121, 121, 121);
             font-weight: bold;
             user-select: none;
+            transition: all 0.2s ease-in-out;
+        }
+
+        .key:active {
+            transform: scale(0.95);
         }
     </style>
 </head>
@@ -209,6 +214,6 @@
         </div>
     </div>
     <script src="./wordlist.js"></script>
-    <script src="./main.js"></script>
+    <script src="./main.js" defer></script>
 </body>
 </html>
