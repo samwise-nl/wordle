@@ -1,0 +1,10 @@
+- name: Push generated webpage to another repository
+  uses: nkoppel/push-files-to-another-repository@1.1.0
+  env:
+    API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+  with:
+    source-files: 'index.html main.js wordlist.js'
+    destination-username: 'samwise-nl'
+    destination-repository: 'samwise-nl.github.io'
+    destination-directory: 'wordle/'
+    commit-email: 'sam.p.russell@gmail.com'
