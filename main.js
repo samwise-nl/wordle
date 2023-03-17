@@ -9,6 +9,7 @@ class Puzzle {
         this.rowIndex = 1;
         this.row = new Row();
         this.initEventListeners();
+        this.NUM_GUESSES = 6;
     }
 
     initEventListeners() {
@@ -46,12 +47,12 @@ class Puzzle {
         }
     }
 
-    userNotice(message) {
+    userNotice(message, timeout = 3000) {
         // TODO: work on transition - ease-in/out
         const alertEl = document.querySelector('.alert');
         alertEl.innerText = message;
         alertEl.style.display = "block";
-        setTimeout(() => { alertEl.style.display = "none"; }, 3000);
+        setTimeout(() => { alertEl.style.display = "none"; }, timeout);
     }
 
     isValidKey(key) {
@@ -100,7 +101,11 @@ class Puzzle {
                     else if (this.row.isValidWord()) {
                         this.row.colorCells(this.todaysWord);
                         this.rowIndex++;
-                        // TODO - need to handle case where not completed and rowIndex > 6
+                        if (this.rowIndex > this.NUM_GUESSES) {
+                            this.isComplete = true;
+                            this.userNotice(`Word was ${this.todaysWord}`, 6000);
+                            return;
+                        }
                         this.row.rowId = `row${this.rowIndex}`;
                         this.row.currentIndex = 1;
                     } else {
